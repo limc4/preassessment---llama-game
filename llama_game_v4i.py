@@ -1,5 +1,5 @@
-"""program for a llama game similar to the dinosaur game - v3
-adding gravity component and jumping - fixed
+"""program for a llama game similar to the dinosaur game - v4
+cactus sprites
 created by Charlotte"""
 
 import pygame
@@ -23,6 +23,7 @@ pygame.display.set_caption("Llama game - by Charlotte")
 white = (255, 255, 255)
 
 X_POSITION, Y_POSITION = 300, 400  # x and y position of the llama
+x_cactus, y_cactus = 1000, 412  # x and y position of cactus to be changed
 
 # for gravity
 jumping = False
@@ -38,13 +39,18 @@ JUMPING_SURFACE = pygame.transform.scale(pygame.image.load("images/Llama.png"),
                                          (42, 58))
 GROUND = pygame.image.load("images/ground.png")
 RESIZED_GROUND = pygame.transform.smoothscale(GROUND, [1000, 100])
+CACTUS = pygame.image.load("images/cactus.png")
 
 SCREEN.fill(white)  # white background
 
 # rectangle to control the position of llama
 llama_rect = STANDING_SURFACE.get_rect(center=(X_POSITION, Y_POSITION))
+cactus_rect = CACTUS.get_rect(center=(x_cactus, y_cactus))
 
 while True:  # let user quit
+    # x_cactus, y_cactus = 1000, 412  # x and y position of cactus to be changed
+    # cactus_rect = CACTUS.get_rect(center=(x_cactus, y_cactus))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -75,6 +81,11 @@ while True:  # let user quit
     # position llama x,y
     llama_rect = STANDING_SURFACE.get_rect(center=(X_POSITION, Y_POSITION))
     SCREEN.blit(STANDING_SURFACE, llama_rect)
+
+    x_cactus -= 5
+
+    cactus_rect = CACTUS.get_rect(center = (x_cactus, y_cactus))
+    SCREEN.blit(CACTUS, cactus_rect)
 
     pygame.display.update()
     CLOCK.tick(60)  # FPS

@@ -1,5 +1,5 @@
 """program for a llama game similar to the dinosaur game - v3
-adding gravity component and jumping - fixed
+adding gravity component and jumping - error trail
 created by Charlotte"""
 
 import pygame
@@ -37,7 +37,6 @@ STANDING_SURFACE = pygame.transform.scale(pygame.image.load("images/Llama2.png")
 JUMPING_SURFACE = pygame.transform.scale(pygame.image.load("images/Llama.png"),
                                          (42, 58))
 GROUND = pygame.image.load("images/ground.png")
-RESIZED_GROUND = pygame.transform.smoothscale(GROUND, [1000, 100])
 
 SCREEN.fill(white)  # white background
 
@@ -56,8 +55,7 @@ while True:  # let user quit
         jumping = True
 
     # update ground x,y
-    SCREEN.fill(white)  # update white background
-    SCREEN.blit(RESIZED_GROUND, (0, 370.5))
+    SCREEN.blit(GROUND, (295, 340))
 
     if jumping:  # jump with gravity
         Y_POSITION -= Y_VELOCITY
