@@ -1,13 +1,14 @@
 """program for a llama game similar to the dinosaur game - v4iii
-cactus class to instantiate multiple cacti onscreen
+randomizing size of cactus2 and distance between cacti
 created by Charlotte"""
 
 import pygame
 import sys
+import random
 
 class Cactus:
     def __init__(self, x, y):
-        self.image = pygame.image.load("images/cactus.png")
+        self.image = pygame.image.load("images/cactus.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.x = x
@@ -33,13 +34,13 @@ white = (255, 255, 255)
 X_POSITION, Y_POSITION = 300, 400  # x and y position of the llama
 x_cactus1, y_cactus1 = 1000, 412  # x and y position of cactus to be changed
 x_cactus2, y_cactus2 = 1300, 412  # x and y position of cactus to be changed
-width_cactus, height_cactus = 32, 32
+scale_cactus = 32
 
 # for gravity
 jumping = False
 
 Y_GRAVITY = 1 # can't be < 0.01 * JUMP_HEIGHT
-JUMP_HEIGHT = 20
+JUMP_HEIGHT = 17
 Y_VELOCITY = JUMP_HEIGHT
 
 # surfaces to represent llama and ground - 2 surfaces for jump/standing llama
@@ -96,11 +97,20 @@ while True:  # let user quit
 
     # move cacti left across screen unless off-screen
     if x_cactus1 < 0:
-        x_cactus1 = 1000
+        scale_cactus = random.randint(32, 45)
+        cactus1.image = pygame.transform.smoothscale(cactus1.image,
+                                                     [scale_cactus,
+                                                      scale_cactus])
+        cactus1.rect = cactus1.image.get_rect()
+        x_cactus1 = random.randint(1000, 1200)
     else:
         x_cactus1 -= 5
 
     if x_cactus2 < 0:
+        scale_cactus = random.randint(32, 45)
+        cactus2.image = pygame.transform.smoothscale(cactus2.image,
+                                             [scale_cactus, scale_cactus])
+        cactus2.rect = cactus2.image.get_rect()
         x_cactus2 = 1000
     else:
         x_cactus2 -= 5
