@@ -73,6 +73,13 @@ while True:  # let user quit
     if keys_pressed[pygame.K_SPACE]:
         jumping = True
 
+    # # print in console when test keys are pressed
+    # if keys_pressed[pygame.K_a]:
+    #     print("key pressed: a")
+    #
+    # if keys_pressed[pygame.K_SEMICOLON]:
+    #     print("key pressed: ;")
+
     # update ground x,y
     SCREEN.fill(white)  # update white background
     SCREEN.blit(RESIZED_GROUND, (0, 370.5))

@@ -1,5 +1,5 @@
 """program for a llama game similar to the dinosaur game - v4iii
-randomizing size of cactus2 and distance between cacti
+randomizing size of and distance between cacti
 created by Charlotte"""
 
 import pygame
