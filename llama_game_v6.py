@@ -1,5 +1,5 @@
 """program for a llama game similar to the dinosaur game - v6
-allow player to quit or play again after losing
+detect if llama collides with cactus
 created by Charlotte"""
 
 import pygame
@@ -72,8 +72,32 @@ def game_loop():
     SCREEN.fill(white)  # white background
 
     quit_game = False
+    game_over = False  # if player loses, game_over = True
 
     while not quit_game:  # let user quit
+
+        # give the option to quit or play again when they die
+        while game_over:
+            SCREEN.fill(white)
+            message("Press 'Q' or the top right X button to Quit or "
+                    "'A' to play Again",
+                    black)
+            pygame.display.update()
+
+            # check if user wants to quit (Q) or play again (A)
+            for event in pygame.event.get():
+                # if user presses X button, game quits
+                if event.type == pygame.QUIT:
+                    print("quit")
+                    quit_game = True
+                    game_over = False
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        quit_game = True
+                        game_over = False
+                    elif event.key == pygame.K_a:
+                        game_loop()  # restart the main game loop
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -139,6 +163,13 @@ def game_loop():
         llama_rect = STANDING_SURFACE.get_rect(center=(X_POSITION, Y_POSITION))
         SCREEN.blit(STANDING_SURFACE, llama_rect)
 
+        # detect if llama centre collides with cactus 1 or 2
+        if llama_rect.colliderect(cactus1.rect):
+            game_over = True
+
+        if llama_rect.colliderect(cactus2.rect):
+            game_over = True
+
         # move cacti left across screen unless off-screen
         if x_cactus1 < 0:
             scale_cactus = random.randint(32, 45)
@@ -164,6 +195,8 @@ def game_loop():
 
         cactus2.rect.center = x_cactus2, y_cactus2
         SCREEN.blit(cactus2.image, cactus2.rect)
+
+
 
         pygame.display.update()
         CLOCK.tick(60)  # FPS
