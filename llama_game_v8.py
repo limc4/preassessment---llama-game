@@ -1,5 +1,5 @@
-"""program for a llama game similar to the dinosaur game - v6
-detect if llama collides with cactus
+"""program for a llama game similar to the dinosaur game - v7
+increase speed
 created by Charlotte"""
 
 import pygame
@@ -30,7 +30,11 @@ pygame.display.set_caption("Llama game - by Charlotte")
 
 black = (0, 0, 0)
 white = (255, 255, 255)
+grey = (56, 56, 56)
 msg_font = pygame.font.SysFont("arialblack", 20)
+
+score_tick = pygame.USEREVENT + 1  # unique event ID for score
+pygame.time.set_timer(score_tick, 1000)
 
 def message(msg, txt_colour):
     """display messages"""
@@ -41,7 +45,17 @@ def message(msg, txt_colour):
 
     SCREEN.blit(txt, text_box)
 
+def score_msg(score, txt_colour):
+    """display messages"""
+    txt = msg_font.render(score, True, txt_colour)
+
+    # centre rectangle: top right of screen
+    text_box = txt.get_rect(center=(900, 25))
+
+    SCREEN.blit(txt, text_box)
+
 def game_loop():
+    score = 0000
     X_POSITION, Y_POSITION = 300, 400  # x and y position of the llama
     x_cactus1, y_cactus1 = 1000, 412  # x and y position of cactus to be changed
     x_cactus2, y_cactus2 = 1300, 412  # x and y position of cactus to be changed
@@ -136,6 +150,8 @@ def game_loop():
                             elif event.key == pygame.K_0:
                                 print("key pressed: 0")
 
+            elif event.type == score_tick:
+                score += 1  # increase score every second
 
         keys_pressed = pygame.key.get_pressed()
 
@@ -145,6 +161,8 @@ def game_loop():
         # update ground x,y
         SCREEN.fill(white)  # update white background
         SCREEN.blit(RESIZED_GROUND, (0, 370.5))
+
+        score_msg(str(f"Score: {score:04}"), grey)  # update score
 
         if jumping:  # jump with gravity
             Y_POSITION -= Y_VELOCITY
