@@ -1,5 +1,5 @@
-"""program for a llama game similar to the dinosaur game - v8
-increase speed
+"""program for a llama game similar to the dinosaur game - v9
+more edits
 created by Charlotte"""
 
 import pygame
