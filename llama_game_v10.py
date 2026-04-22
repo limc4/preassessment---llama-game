@@ -1,5 +1,5 @@
-"""program for a llama game similar to the dinosaur game - v9
-trial 2 for player score
+"""program for a llama game similar to the dinosaur game - v10
+trial 2 for 
 created by Charlotte"""
 
 import pygame
