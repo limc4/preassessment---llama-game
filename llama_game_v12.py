@@ -1,5 +1,5 @@
-"""program for a llama game similar to the dinosaur game - v11
-Starting instruction screen
+"""program for a llama game similar to the dinosaur game - v12
+fix floating cactus
 created by Charlotte"""
 
 import pygame
