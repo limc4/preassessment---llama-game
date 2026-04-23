@@ -9,7 +9,7 @@ class Cactus:
     def __init__(self, x, y):
         self.image = pygame.image.load("images/cactus.png").convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
+        self.rect.midbottom = (x, y)
         self.x = x
         self.y = y
 
@@ -45,21 +45,32 @@ def message(msg, txt_colour, center_):
 
     SCREEN.blit(txt, text_box)
 
-def vary_cacti(x_cactus, image, rect):
+def vary_cacti(x_cactus, image, rect,
+               y_ground):  # Added y_ground as a parameter
     """Vary scale of cactus and distance it spawns from screen"""
     if x_cactus < 0:
         # randomize size of cactus
         scales = [32, 38, 45]
         scale_choice = random.randint(0, 2)
         scale_cactus = scales[scale_choice]
-        image = pygame.transform.smoothscale(image,[scale_cactus,
-                                                      scale_cactus])
+
+        # scale image
+        image = pygame.transform.smoothscale(image,
+                                             [scale_cactus, scale_cactus])
+
+        # create new rect and pin its bottom to the ground level
         rect = image.get_rect()
 
         # randomize when cactus returns to screen
         x_cactus = random.randint(1000, 1200)
+
+        # Pin the "feet" to the ground
+        rect.midbottom = (x_cactus, y_ground)
     else:
         x_cactus -= 5
+        # Update the rect position as it moves left
+        rect.x = x_cactus
+
     return x_cactus, image, rect
 
 def game_loop():
@@ -67,8 +78,8 @@ def game_loop():
     speed = 60
 
     X_POSITION, Y_POSITION = 300, 400  # x and y position of the llama
-    x_cactus1, y_cactus1 = 1000, 412  # x and y position of cactus to be changed
-    x_cactus2, y_cactus2 = 1300, 412  # x and y position of cactus to be changed
+    x_cactus1, y_cactus1 = 1000, 429  # x and y position of cactus to be changed
+    x_cactus2, y_cactus2 = 1300, 429  # x and y position of cactus to be changed
 
     # for gravity
     jumping = False
@@ -206,14 +217,16 @@ def game_loop():
         if jumping:  # jump with gravity
             Y_POSITION -= Y_VELOCITY
             Y_VELOCITY -= Y_GRAVITY
-            if Y_VELOCITY < -JUMP_HEIGHT:  # jump velocity increases until max then
-            # decrease until negative jump height
+            if Y_VELOCITY < -JUMP_HEIGHT:  # jump velocity increases until max
+                # then decrease until negative jump height
                 jumping = False
                 Y_VELOCITY = JUMP_HEIGHT
-            llama_rect = JUMPING_SURFACE.get_rect(center=(X_POSITION, Y_POSITION))
+            llama_rect = JUMPING_SURFACE.get_rect(center=(X_POSITION,
+                                                          Y_POSITION))
             SCREEN.blit(JUMPING_SURFACE, llama_rect)
         else:
-            llama_rect = STANDING_SURFACE.get_rect(center=(X_POSITION, Y_POSITION))
+            llama_rect = STANDING_SURFACE.get_rect(center=(X_POSITION,
+                                                           Y_POSITION))
             SCREEN.blit(STANDING_SURFACE, llama_rect)
 
         # position llama x,y
@@ -227,32 +240,23 @@ def game_loop():
         if llama_rect.colliderect(cactus2.rect):
             game_over = True
 
-
-        x_cactus1 = vary_cacti(x_cactus1, cactus1.image, cactus1.rect)[0]
-        print(x_cactus1)
-        cactus1.image = vary_cacti(x_cactus1, cactus1.image, cactus1.rect)[1]
-        print(cactus1.image)
-        cactus1.rect = vary_cacti(x_cactus1, cactus1.image, cactus1.rect)[2]
-        print(cactus1.rect)
-
-        if x_cactus2 < 0:
-            # randomize size of cactus2
-            scales = [32, 38, 45]
-            choice = random.randint(0,2)
-            scale_cactus2 = scales[choice]
-            cactus2.image = pygame.transform.smoothscale(cactus2.image,
-                                                        [scale_cactus2,
-                                                            scale_cactus2])
-            cactus2.rect = cactus2.image.get_rect()
-
-            x_cactus2 = random.randint(1000,1200)
-        else:
-            x_cactus2 -= 5
-
-        cactus1.rect.center = x_cactus1, y_cactus1
+        # call vary_cacti function for cactus1
+        x_cactus1, cactus1.image, cactus1.rect = vary_cacti(x_cactus1,
+                                                            cactus1.image,
+                                                            cactus1.rect,
+                                                            y_cactus1)
+        # set position of cactus1
+        cactus1.rect.midbottom = (x_cactus1, y_cactus1)
         SCREEN.blit(cactus1.image, cactus1.rect)
 
-        cactus2.rect.center = x_cactus2, y_cactus2
+        # call vary_cacti function for cactus2
+        x_cactus2, cactus2.image, cactus2.rect = vary_cacti(x_cactus2,
+                                                            cactus2.image,
+                                                            cactus2.rect,
+                                                            y_cactus2)
+
+        # set position of cactus2
+        cactus2.rect.midbottom = (x_cactus2, y_cactus2)
         SCREEN.blit(cactus2.image, cactus2.rect)
 
         pygame.display.update()
