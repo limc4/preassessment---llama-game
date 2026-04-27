@@ -1,5 +1,5 @@
-"""program for a llama game similar to the dinosaur game - v12
-fix floating cactus
+"""program for a llama game similar to the dinosaur game - v13
+adding spacebar as an option to restart game when lost
 created by Charlotte"""
 
 import pygame
@@ -156,6 +156,9 @@ def game_loop():
                         game_over = False
                     elif event.key == pygame.K_a:
                         print("key pressed: a")
+                        game_loop()  # restart the main game loop
+                    elif event.key == pygame.K_SPACE:
+                        print("key pressed: spacebar")
                         game_loop()  # restart the main game loop
 
         for event in pygame.event.get():
